@@ -64,7 +64,7 @@ jobs:
           contains(steps.changed-files.outputs.all_changed_files, '.ts') ||
           contains(steps.changed-files.outputs.all_changed_files, '.html')
 
-      - name: Install Npm Dependencies
+      - name: Run frontend test
         working-directory: frontend
         run: |
           npm run test
