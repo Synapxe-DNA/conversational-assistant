@@ -1,0 +1,78 @@
+name: Run Frontend Tests
+
+on:
+  pull_request:
+    paths:
+      - "**/*.css"
+      - "**/*.json"
+      - "**/*.ts"
+      - "**/*.html"
+      - "**/*.json"
+      - "**/*.yaml"
+      - "**/*.yml"
+
+jobs:
+  run_checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Get Changed Files
+        id: changed-files
+        uses: tj-actions/changed-files@v41
+
+      - name: Set Up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+        if: >
+
+          contains(steps.changed-files.outputs.all_changed_files, '.css') ||
+          contains(steps.changed-files.outputs.all_changed_files, '.json') ||
+          contains(steps.changed-files.outputs.all_changed_files, '.yaml') ||
+          contains(steps.changed-files.outputs.all_changed_files, '.yml') ||
+          contains(steps.changed-files.outputs.all_changed_files, '.ts') ||
+          contains(steps.changed-files.outputs.all_changed_files, '.html')
+
+      - name: Cache Frontend Dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+        if: >
+
+          contains(steps.changed-files.outputs.all_changed_files, '.css') ||
+          contains(steps.changed-files.outputs.all_changed_files, '.json') ||
+          contains(steps.changed-files.outputs.all_changed_files, '.yaml') ||
+          contains(steps.changed-files.outputs.all_changed_files, '.yml') ||
+          contains(steps.changed-files.outputs.all_changed_files, '.ts') ||
+          contains(steps.changed-files.outputs.all_changed_files, '.html')
+
+      - name: Install Npm Dependencies
+        working-directory: frontend
+        run: |
+          npm install -d
+        if: >
+
+          contains(steps.changed-files.outputs.all_changed_files, '.css') ||
+          contains(steps.changed-files.outputs.all_changed_files, '.json') ||
+          contains(steps.changed-files.outputs.all_changed_files, '.yaml') ||
+          contains(steps.changed-files.outputs.all_changed_files, '.yml') ||
+          contains(steps.changed-files.outputs.all_changed_files, '.ts') ||
+          contains(steps.changed-files.outputs.all_changed_files, '.html')
+
+      - name: Run frontend test
+        working-directory: frontend
+        run: |
+          npm run test
+        if: >
+
+          contains(steps.changed-files.outputs.all_changed_files, '.css') ||
+          contains(steps.changed-files.outputs.all_changed_files, '.json') ||
+          contains(steps.changed-files.outputs.all_changed_files, '.yaml') ||
+          contains(steps.changed-files.outputs.all_changed_files, '.yml') ||
+          contains(steps.changed-files.outputs.all_changed_files, '.ts') ||
+          contains(steps.changed-files.outputs.all_changed_files, '.html')
