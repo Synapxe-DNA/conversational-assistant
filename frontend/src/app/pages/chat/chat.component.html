@@ -1,1 +1,10 @@
-<p>chat works!</p>
+@switch (chatMode){
+
+    @case (ChatMode.Voice){
+        <app-voice></app-voice>
+    }
+    @case (ChatMode.Text){
+        <app-text></app-text>
+    }
+
+}
