@@ -1,7 +1,7 @@
-import { Component } from "@angular/core";
-import { PreferenceService } from "../../services/preference/preference.service";
-import { WaveformComponent } from "../waveform/waveform.component";
-import { AudioService } from "../../services/audio/audio.service";
+import { Component } from "@angular/core"
+import { PreferenceService } from "../../services/preference/preference.service"
+import { WaveformComponent } from "../waveform/waveform.component"
+import { AudioService } from "../../services/audio/audio.service"
 
 @Component({
   selector: "app-voice",
