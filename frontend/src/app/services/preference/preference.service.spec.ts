@@ -1,8 +1,8 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { PreferenceService } from './preference.service';
+import { PreferenceService } from "./preference.service";
 
-describe('PreferenceService', () => {
+describe("PreferenceService", () => {
   let service: PreferenceService;
 
   beforeEach(() => {
@@ -10,7 +10,7 @@ describe('PreferenceService', () => {
     service = TestBed.inject(PreferenceService);
   });
 
-  it('should be created', () => {
+  it("should be created", () => {
     expect(service).toBeTruthy();
   });
 });

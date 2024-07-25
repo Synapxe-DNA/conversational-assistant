@@ -1,12 +1,10 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
 
 @Component({
-  selector: 'app-navbar-logo-group',
+  selector: "app-navbar-logo-group",
   standalone: true,
   imports: [],
-  templateUrl: './navbar-logo-group.component.html',
-  styleUrl: './navbar-logo-group.component.css'
+  templateUrl: "./navbar-logo-group.component.html",
+  styleUrl: "./navbar-logo-group.component.css",
 })
-export class NavbarLogoGroupComponent {
-
-}
+export class NavbarLogoGroupComponent {}

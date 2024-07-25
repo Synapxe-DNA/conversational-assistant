@@ -1,19 +1,17 @@
-
-
 export interface Profile {
-  id: string
-  name: string,
+  id: string;
+  name: string;
   details: {
-    isMale: boolean,
-    age: number
-  }
+    isMale: boolean;
+    age: number;
+  };
 }
 
-export const GeneralProfile:Profile = {
+export const GeneralProfile: Profile = {
   id: "",
   name: "General",
   details: {
     isMale: false,
-    age: NaN
-  }
-}
+    age: NaN,
+  },
+};

@@ -1,12 +1,10 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
 
 @Component({
-  selector: 'app-text',
+  selector: "app-text",
   standalone: true,
   imports: [],
-  templateUrl: './text.component.html',
-  styleUrl: './text.component.css'
+  templateUrl: "./text.component.html",
+  styleUrl: "./text.component.css",
 })
-export class TextComponent {
-
-}
+export class TextComponent {}

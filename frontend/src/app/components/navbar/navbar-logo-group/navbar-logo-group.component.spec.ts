@@ -1,23 +1,22 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { NavbarLogoGroupComponent } from './navbar-logo-group.component';
+import { NavbarLogoGroupComponent } from "./navbar-logo-group.component";
 
-describe('NavbarLogoGroupComponent', () => {
+describe("NavbarLogoGroupComponent", () => {
   let component: NavbarLogoGroupComponent;
   let fixture: ComponentFixture<NavbarLogoGroupComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NavbarLogoGroupComponent]
-    })
-    .compileComponents();
+      imports: [NavbarLogoGroupComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(NavbarLogoGroupComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });
