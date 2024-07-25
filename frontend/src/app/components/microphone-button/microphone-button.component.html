@@ -1,0 +1,10 @@
+<button
+  [ngClass]="[
+    'tw-flex tw-items-center tw-justify-center tw-w-16 tw-h-16 tw-rounded-full',
+    buttonClass
+  ]"
+  [disabled]="state === MicState.DISABLED"
+  (click)="onClick()"
+>
+  <lucide-icon name="mic" size="34"></lucide-icon>
+</button>
