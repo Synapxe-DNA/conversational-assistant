@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "lint": "prettier --check \"**/*.{css,json,yaml,yml,md,ts,html,ts}\"",
-    "lint:fix": "prettier --check \"**/*.{css,json,yaml,yml,md,ts,html,ts}\" -w",
+    "lint:fix": "prettier --check \"**/*.{css,json,yaml,yml,md,ts,html,ts}\" -w --no-semi",
     "test": "ng test --no-watch --no-progress --browsers=ChromeHeadless",
     "test:show": "ng test"
   },
