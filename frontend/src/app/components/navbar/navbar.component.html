@@ -6,6 +6,9 @@
 
   <div class="tw-px-2">
     <app-navbar-profile-link [profile]="GeneralProfile" />
+    @for (p of profiles; track p.id) {
+      <app-navbar-profile-link [profile]="p" />
+    }
     <app-navbar-profile-create />
   </div>
 </div>

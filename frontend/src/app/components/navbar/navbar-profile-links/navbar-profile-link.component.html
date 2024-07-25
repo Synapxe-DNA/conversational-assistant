@@ -1,4 +1,5 @@
 <a
+  #profileLink
   href="/chat/{{ profile.id }}"
   class="
 tw-transition-all
@@ -25,3 +26,8 @@ tw-cursor-pointer
     }}</span>
   </div>
 </a>
+<p-contextMenu
+  *ngIf="profile.id"
+  [target]="profileLink"
+  [model]="contextMenuItems"
+/>
