@@ -1,5 +1,5 @@
 button {
-  @apply tw-flex tw-items-center tw-justify-center tw-w-16 tw-h-16 tw-rounded-full tw-transition tw-duration-300;
+  @apply tw-flex tw-items-center tw-justify-center tw-w-24 tw-h-24 tw-rounded-full tw-transition tw-duration-300;
 }
 
 button:disabled {

@@ -3,8 +3,9 @@
 >
   <span class="tw-text-white tw-font-bold tw-text-4xl">HealthierME</span>
   <app-waveform [bars]="8" />
-  <!-- Button group -->
-  <div>
+  <div class="button-group">
+    <app-secondary-button type="chat"></app-secondary-button>
     <app-microphone-button [state]="micState"></app-microphone-button>
+    <app-secondary-button type="profile"></app-secondary-button>
   </div>
 </div>
