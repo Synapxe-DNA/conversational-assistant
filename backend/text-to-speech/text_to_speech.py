@@ -2,53 +2,55 @@
 import os
 
 import azure.cognitiveservices.speech as speechsdk
-from azure.identity import DefaultAzureCredential
+from azure.identity import AzureCliCredential
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv("./.env")
 
-# No API Keys used
-azure_credential = DefaultAzureCredential(
-    exclude_environment_credential=True,
-    exclude_managed_identity_credential=True,
-    exclude_workload_identity_credential=True,
-    exclude_developer_cli_credential=True,
-    exclude_powershell_credential=True,
-    exclude_visual_studio_code_credential=True,
-    exclude_shared_token_cache_credential=True,
-    exclude_interactive_browser_credential=True,
-)
-aadToken = azure_credential.get_token("https://cognitiveservices.azure.com/.default")
+# Ensure you have logged using `az login` before running this code
 
-# ibc = InteractiveBrowserCredential()
-# aadToken = ibc.get_token("https://cognitiveservices.azure.com/.default")
-print(aadToken.token)
-resourceId = os.getenv("SPEECH_RESOURCE_ID")
-region = os.getenv("SPEECH_REGION")
-# You need to include the "aad#" prefix and the "#" (hash) separator between resource ID and AAD access token.
-authorizationToken = "aad#" + resourceId + "#" + aadToken.token
 
-speechConfig = speechsdk.SpeechConfig(auth_token=authorizationToken, region=region)
-audioConfig = speechsdk.audio.AudioOutputConfig(use_default_speaker=True)
+class TextToSpeech:
 
-speechConfig.speech_synthesis_voice_name = "en-US-AvaMultilingualNeural"
+    def __init__(self) -> None:
+        self.azure_credential = AzureCliCredential()
+        self.aadToken = self.azure_credential.get_token(
+            "https://cognitiveservices.azure.com/.default"
+        )
+        self.resourceId = os.getenv("SPEECH_RESOURCE_ID")
+        self.region = os.getenv("SPEECH_REGION")
+        self.speechConfig = speechsdk.SpeechConfig(
+            auth_token=self.getAuthToken(), region=self.region
+        )
+        self.speechConfig.speech_synthesis_voice_name = "en-US-AvaMultilingualNeural"
+        self.audioConfig = speechsdk.audio.AudioOutputConfig(use_default_speaker=True)
+        self.speech_synthesizer = speechsdk.SpeechSynthesizer(
+            speech_config=self.speechConfig, audio_config=self.audioConfig
+        )
 
-speech_synthesizer = speechsdk.SpeechSynthesizer(
-    speech_config=speechConfig, audio_config=audioConfig
-)
+    def getAuthToken(self):
+        return "aad#" + self.resourceId + "#" + self.aadToken.token
+
+    def readText(self, text):
+        speech_synthesis_result = self.speech_synthesizer.speak_text_async(text).get()
+        if (
+            speech_synthesis_result.reason
+            == speechsdk.ResultReason.SynthesizingAudioCompleted
+        ):
+            print("Speech synthesized for text [{}]".format(text))
+        elif speech_synthesis_result.reason == speechsdk.ResultReason.Canceled:
+            cancellation_details = speech_synthesis_result.cancellation_details
+            print("Speech synthesis canceled: {}".format(cancellation_details.reason))
+            if cancellation_details.reason == speechsdk.CancellationReason.Error:
+                if cancellation_details.error_details:
+                    print(
+                        "Error details: {}".format(cancellation_details.error_details)
+                    )
+                    print("Did you set the speech resource key and region values?")
+
 
 # Get text from the console and synthesize to the default speaker.
+tts = TextToSpeech()
 print("Enter some text that you want to speak >")
 text = input()
-
-speech_synthesis_result = speech_synthesizer.speak_text_async(text).get()
-
-if speech_synthesis_result.reason == speechsdk.ResultReason.SynthesizingAudioCompleted:
-    print("Speech synthesized for text [{}]".format(text))
-elif speech_synthesis_result.reason == speechsdk.ResultReason.Canceled:
-    cancellation_details = speech_synthesis_result.cancellation_details
-    print("Speech synthesis canceled: {}".format(cancellation_details.reason))
-    if cancellation_details.reason == speechsdk.CancellationReason.Error:
-        if cancellation_details.error_details:
-            print("Error details: {}".format(cancellation_details.error_details))
-            print("Did you set the speech resource key and region values?")
+tts.readText(text)
