@@ -8,6 +8,7 @@ export const routes: Routes = [
     path: "",
     component: MainLayoutComponent,
     children: [
+      {path: "", pathMatch:"full", redirectTo:"/chat/general"},
       {
         path: "create",
         component: CreateProfileComponent,
