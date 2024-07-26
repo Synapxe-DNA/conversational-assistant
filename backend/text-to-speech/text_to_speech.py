@@ -1,18 +1,28 @@
 # quickstart.py
 import os
-from azure.identity import (DefaultAzureCredential,get_bearer_token_provider, InteractiveBrowserCredential)
-from dotenv import load_dotenv
+
 import azure.cognitiveservices.speech as speechsdk
+from azure.identity import DefaultAzureCredential
+from dotenv import load_dotenv
 
 load_dotenv()
 
 # No API Keys used
-# azure_credential = DefaultAzureCredential()
-# aadToken = azure_credential.get_token("https://cognitiveservices.azure.com/.default")
+azure_credential = DefaultAzureCredential(
+    exclude_environment_credential=True,
+    exclude_managed_identity_credential=True,
+    exclude_workload_identity_credential=True,
+    exclude_developer_cli_credential=True,
+    exclude_powershell_credential=True,
+    exclude_visual_studio_code_credential=True,
+    exclude_shared_token_cache_credential=True,
+    exclude_interactive_browser_credential=True,
+)
+aadToken = azure_credential.get_token("https://cognitiveservices.azure.com/.default")
 
-ibc = InteractiveBrowserCredential()
-aadToken = ibc.get_token("https://cognitiveservices.azure.com/.default")
-
+# ibc = InteractiveBrowserCredential()
+# aadToken = ibc.get_token("https://cognitiveservices.azure.com/.default")
+print(aadToken.token)
 resourceId = os.getenv("SPEECH_RESOURCE_ID")
 region = os.getenv("SPEECH_REGION")
 # You need to include the "aad#" prefix and the "#" (hash) separator between resource ID and AAD access token.
@@ -21,9 +31,11 @@ authorizationToken = "aad#" + resourceId + "#" + aadToken.token
 speechConfig = speechsdk.SpeechConfig(auth_token=authorizationToken, region=region)
 audioConfig = speechsdk.audio.AudioOutputConfig(use_default_speaker=True)
 
-speechConfig.speech_synthesis_voice_name='en-US-AvaMultilingualNeural'
+speechConfig.speech_synthesis_voice_name = "en-US-AvaMultilingualNeural"
 
-speech_synthesizer = speechsdk.SpeechSynthesizer(speech_config=speechConfig, audio_config=audioConfig)
+speech_synthesizer = speechsdk.SpeechSynthesizer(
+    speech_config=speechConfig, audio_config=audioConfig
+)
 
 # Get text from the console and synthesize to the default speaker.
 print("Enter some text that you want to speak >")
