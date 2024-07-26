@@ -1,22 +1,15 @@
 button {
-  @apply tw-flex tw-items-center tw-justify-center tw-w-16 tw-h-16 tw-rounded-full;
-  border: none;
-  font-size: 1.5rem;
-  transition: background-color 0.3s;
+  @apply tw-flex tw-items-center tw-justify-center tw-w-16 tw-h-16 tw-rounded-full tw-transition tw-duration-300;
 }
 
 button:disabled {
-  @apply tw-cursor-not-allowed;
+  @apply tw-cursor-not-allowed tw-bg-gray-500 tw-border-8 tw-border-gray-800;
 }
 
-.tw-bg-yellow-500 {
-  background-color: #facc15;
+button.pending {
+  @apply tw-bg-white tw-border-8 tw-border-blue-500;
 }
 
-.tw-bg-green-500 {
-  background-color: #10b981;
-}
-
-.tw-bg-gray-500 {
-  background-color: #6b7280;
+button.active {
+  @apply tw-bg-blue-500;
 }

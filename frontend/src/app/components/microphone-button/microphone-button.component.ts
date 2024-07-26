@@ -1,22 +1,17 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { LucideAngularModule } from "lucide-angular";
-
-export enum MicState {
-  PENDING = "pending",
-  ACTIVE = "active",
-  DISABLED = "disabled",
-}
+import { MicState } from "../../types/mic-state.type";
 
 @Component({
   selector: "app-microphone-button",
   standalone: true,
   imports: [CommonModule, LucideAngularModule],
   templateUrl: "./microphone-button.component.html",
-  styleUrl: "./microphone-button.component.css",
+  styleUrls: ["./microphone-button.component.css"],
 })
 export class MicrophoneButtonComponent {
-  MicState = MicState;
+  @Input() MicState = MicState;
   @Input() state: MicState = MicState.PENDING;
   @Output() stateChange = new EventEmitter<MicState>();
 

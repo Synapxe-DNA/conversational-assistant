@@ -2,10 +2,8 @@ import { Component } from "@angular/core";
 import { PreferenceService } from "../../services/preference/preference.service";
 import { WaveformComponent } from "../waveform/waveform.component";
 import { AudioService } from "../../services/audio/audio.service";
-import {
-  MicrophoneButtonComponent,
-  MicState,
-} from "../microphone-button/microphone-button.component";
+import { MicrophoneButtonComponent } from "../microphone-button/microphone-button.component";
+import { MicState } from "../../types/mic-state.type";
 
 @Component({
   selector: "app-voice",
@@ -16,14 +14,6 @@ import {
 })
 export class VoiceComponent {
   micState: MicState = MicState.PENDING;
-
-  onMicStateChange(newState: MicState) {
-    this.micState = newState;
-  }
-
-  onButtonClick(buttonName: string) {
-    console.log(`${buttonName} clicked!`);
-  }
 
   constructor(private preference: PreferenceService) {}
 }
