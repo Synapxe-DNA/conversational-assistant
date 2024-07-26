@@ -1,22 +1,22 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from "@angular/core/testing"
 
-import { NavbarProfileCreateComponent } from "./navbar-profile-create.component";
+import { NavbarProfileCreateComponent } from "./navbar-profile-create.component"
 
 describe("NavbarProfileCreateComponent", () => {
-  let component: NavbarProfileCreateComponent;
-  let fixture: ComponentFixture<NavbarProfileCreateComponent>;
+  let component: NavbarProfileCreateComponent
+  let fixture: ComponentFixture<NavbarProfileCreateComponent>
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [NavbarProfileCreateComponent],
-    }).compileComponents();
+    }).compileComponents()
 
-    fixture = TestBed.createComponent(NavbarProfileCreateComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    fixture = TestBed.createComponent(NavbarProfileCreateComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
 
   it("should create", () => {
-    expect(component).toBeTruthy();
-  });
-});
+    expect(component).toBeTruthy()
+  })
+})

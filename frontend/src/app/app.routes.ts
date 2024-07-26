@@ -1,7 +1,7 @@
-import { Routes } from "@angular/router";
-import { MainLayoutComponent } from "./layouts/main-layout/main-layout.component";
-import { CreateProfileComponent } from "./pages/create-profile/create-profile.component";
-import { ChatComponent } from "./pages/chat/chat.component";
+import { Routes } from "@angular/router"
+import { MainLayoutComponent } from "./layouts/main-layout/main-layout.component"
+import { CreateProfileComponent } from "./pages/create-profile/create-profile.component"
+import { ChatComponent } from "./pages/chat/chat.component"
 
 export const routes: Routes = [
   {
@@ -30,4 +30,4 @@ export const routes: Routes = [
     path: "**",
     redirectTo: "/chat/general",
   },
-];
+]

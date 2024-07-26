@@ -1,22 +1,22 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from "@angular/core/testing"
 
-import { NavbarProfileLinkComponent } from "./navbar-profile-link.component";
+import { NavbarProfileLinkComponent } from "./navbar-profile-link.component"
 
 describe("NavbarProfileLinksComponent", () => {
-  let component: NavbarProfileLinkComponent;
-  let fixture: ComponentFixture<NavbarProfileLinkComponent>;
+  let component: NavbarProfileLinkComponent
+  let fixture: ComponentFixture<NavbarProfileLinkComponent>
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [NavbarProfileLinkComponent],
-    }).compileComponents();
+    }).compileComponents()
 
-    fixture = TestBed.createComponent(NavbarProfileLinkComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    fixture = TestBed.createComponent(NavbarProfileLinkComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
 
   it("should create", () => {
-    expect(component).toBeTruthy();
-  });
-});
+    expect(component).toBeTruthy()
+  })
+})

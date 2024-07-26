@@ -1,40 +1,57 @@
-import { AfterViewInit, Component, Input, OnInit } from "@angular/core";
-import { Profile } from "../../../types/profile.type";
-import { ActivatedRoute, Router } from "@angular/router";
-import { NgOptimizedImage } from "@angular/common";
+import { AfterViewInit, Component, Input, OnInit } from "@angular/core"
+import { Profile } from "../../../types/profile.type"
+import { ActivatedRoute, Router } from "@angular/router"
+import { NgIf, NgOptimizedImage } from "@angular/common"
+import { ContextMenuModule } from "primeng/contextmenu"
+import { MenuItem, MenuItemCommandEvent } from "primeng/api"
+import { ProfileService } from "../../../services/profile/profile.service"
 
 @Component({
   selector: "app-navbar-profile-link",
   standalone: true,
-  imports: [NgOptimizedImage],
+  imports: [NgOptimizedImage, ContextMenuModule, NgIf],
   templateUrl: "./navbar-profile-link.component.html",
   styleUrl: "./navbar-profile-link.component.css",
 })
 export class NavbarProfileLinkComponent implements OnInit {
-  @Input() profile!: Profile;
+  @Input() profile!: Profile
 
-  isActive: boolean = false;
+  isActive: boolean = false
 
-  constructor(private router: Router) {}
+  contextMenuItems: MenuItem[] = [
+    {
+      label: "Delete",
+      command: () => {
+        if (this.profile.id) {
+          this.profileService.deleteProfile(this.profile.id)
+        }
+      },
+    },
+  ]
+
+  constructor(
+    private router: Router,
+    private profileService: ProfileService,
+  ) {}
 
   ngOnInit() {
-    const currentPath = this.router.url.split("/");
+    const currentPath = this.router.url.split("/")
 
     if (currentPath.length >= 3 && currentPath[1] === "chat") {
       if (
         currentPath[2] === this.profile.id ||
         (currentPath[2] === "general" && !this.profile.id)
       ) {
-        this.isActive = true;
+        this.isActive = true
       }
     }
   }
 
   getProfileDescription(): string {
     if (this.profile.id === "") {
-      return "No profile set";
+      return "No profile set"
     }
 
-    return `${this.profile.details.isMale ? "Male" : "Female"}, ${this.profile.details.age} years old`;
+    return `${this.profile.isMale ? "Male" : "Female"}, ${this.profile.age} years old`
   }
 }

@@ -1,8 +1,8 @@
-import { Component } from "@angular/core";
-import { ChatMode } from "../../types/chat-mode.type";
-import { PreferenceService } from "../../services/preference/preference.service";
-import { VoiceComponent } from "../../components/voice/voice.component";
-import { TextComponent } from "../../components/text/text.component";
+import { Component } from "@angular/core"
+import { ChatMode } from "../../types/chat-mode.type"
+import { PreferenceService } from "../../services/preference/preference.service"
+import { VoiceComponent } from "../../components/voice/voice.component"
+import { TextComponent } from "../../components/text/text.component"
 
 @Component({
   selector: "app-chat",
@@ -12,13 +12,13 @@ import { TextComponent } from "../../components/text/text.component";
   styleUrl: "./chat.component.css",
 })
 export class ChatComponent {
-  chatMode?: ChatMode;
+  chatMode?: ChatMode
 
   constructor(private preference: PreferenceService) {
     this.preference.$chatMode.subscribe((m) => {
-      this.chatMode = m;
-    });
+      this.chatMode = m
+    })
   }
 
-  protected readonly ChatMode = ChatMode;
+  protected readonly ChatMode = ChatMode
 }
