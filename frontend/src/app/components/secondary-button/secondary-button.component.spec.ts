@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SecondaryButtonComponent } from './secondary-button.component';
+import {icons, LucideAngularModule} from "lucide-angular";
 
 describe('SecondaryButtonComponent', () => {
   let component: SecondaryButtonComponent;
@@ -8,7 +9,7 @@ describe('SecondaryButtonComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SecondaryButtonComponent]
+      imports: [SecondaryButtonComponent, LucideAngularModule.pick(icons),]
     })
     .compileComponents();
 

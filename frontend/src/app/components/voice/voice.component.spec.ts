@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing"
 
 import { VoiceComponent } from "./voice.component"
+import {icons, LucideAngularModule} from "lucide-angular";
 
 describe("VoiceComponent", () => {
   let component: VoiceComponent
@@ -8,7 +9,7 @@ describe("VoiceComponent", () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [VoiceComponent],
+      imports: [VoiceComponent, LucideAngularModule.pick(icons),],
     }).compileComponents()
 
     fixture = TestBed.createComponent(VoiceComponent)
