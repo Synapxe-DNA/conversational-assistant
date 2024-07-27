@@ -7,8 +7,9 @@ export const NgxIndexedDbSchema: VersionedSchema = {
       storeConfig: { keyPath: "id", autoIncrement: false },
       storeSchema: [
         { name: "name", keypath: "name", options: { unique: false } },
+        { name: "profile_type", keypath: "profile_type", options: {unique: false} },
         { name: "age", keypath: "age", options: { unique: false } },
-        { name: "isMale", keypath: "isMale", options: { unique: false } },
+        { name: "gender", keypath: "gender", options: { unique: false } },
         {
           name: "existing_conditions",
           keypath: "existing_conditions",

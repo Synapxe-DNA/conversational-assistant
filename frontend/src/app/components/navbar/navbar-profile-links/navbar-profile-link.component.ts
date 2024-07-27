@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, Input, OnInit } from "@angular/core"
-import { Profile } from "../../../types/profile.type"
+import {Profile, ProfileGender} from "../../../types/profile.type"
 import { ActivatedRoute, Router } from "@angular/router"
 import { NgIf, NgOptimizedImage } from "@angular/common"
 import { ContextMenuModule } from "primeng/contextmenu"
-import { MenuItem, MenuItemCommandEvent } from "primeng/api"
+import {MenuItem, MenuItemCommandEvent, MessageService} from "primeng/api"
 import { ProfileService } from "../../../services/profile/profile.service"
 
 @Component({
@@ -24,6 +24,9 @@ export class NavbarProfileLinkComponent implements OnInit {
       command: () => {
         if (this.profile.id) {
           this.profileService.deleteProfile(this.profile.id)
+          this.toastService.add({
+            severity: "warn", summary: "Profile deleted!", detail: `${this.profile.name} has been deleted.`
+          })
         }
       },
     },
@@ -32,6 +35,7 @@ export class NavbarProfileLinkComponent implements OnInit {
   constructor(
     private router: Router,
     private profileService: ProfileService,
+    private toastService: MessageService
   ) {}
 
   ngOnInit() {
@@ -52,6 +56,6 @@ export class NavbarProfileLinkComponent implements OnInit {
       return "No profile set"
     }
 
-    return `${this.profile.isMale ? "Male" : "Female"}, ${this.profile.age} years old`
+    return `${this.profile.gender === ProfileGender.Undefined ? "" : this.profile.gender+","} ${this.profile.age} years old`
   }
 }
