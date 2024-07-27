@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MicrophoneButtonComponent } from './microphone-button.component';
+import {icons, LucideAngularModule} from "lucide-angular";
 
 describe('MicrophoneButtonComponent', () => {
   let component: MicrophoneButtonComponent;
@@ -8,7 +9,7 @@ describe('MicrophoneButtonComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MicrophoneButtonComponent]
+      imports: [MicrophoneButtonComponent, LucideAngularModule.pick(icons),]
     })
     .compileComponents();
 

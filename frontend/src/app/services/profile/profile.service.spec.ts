@@ -1,12 +1,20 @@
 import { TestBed } from "@angular/core/testing"
 
 import { ProfileService } from "./profile.service"
+import {NgxIndexedDBModule, NgxIndexedDBService} from "ngx-indexed-db";
+import {NgxIndexedDbConfig} from "../../configs/ngx-indexed-db/ngx-indexed-db.config";
 
-describe("StorageService", () => {
+describe("ProfileService", () => {
   let service: ProfileService
 
   beforeEach(() => {
-    TestBed.configureTestingModule({})
+    TestBed.configureTestingModule({
+      imports: [NgxIndexedDBModule.forRoot(NgxIndexedDbConfig)],
+      providers: [
+        ProfileService,
+        NgxIndexedDBService
+      ]
+    })
     service = TestBed.inject(ProfileService)
   })
 
