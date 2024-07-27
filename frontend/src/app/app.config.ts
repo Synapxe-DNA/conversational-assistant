@@ -17,6 +17,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
 import {ToastModule} from "primeng/toast";
 import { NgxIndexedDBModule } from "ngx-indexed-db"
 import { NgxIndexedDbConfig } from "./configs/ngx-indexed-db/ngx-indexed-db.config"
+import {ToastModule} from "primeng/toast";
 
 export const appConfig: ApplicationConfig = {
   providers: [
