@@ -33,7 +33,7 @@ export class CreateProfileComponent {
 
   profileForm:FormGroup = new FormGroup({
     name: new FormControl<string>(''),
-    profile_type: new FormControl<ProfileType>(ProfileType.Undefined),
+    profile_type: new FormControl<ProfileType>(ProfileType.Myself),
     age: new FormControl<number|null>(null),
     gender: new FormControl<ProfileGender>(ProfileGender.Undefined),
     existing_condition: new FormControl<string>("")

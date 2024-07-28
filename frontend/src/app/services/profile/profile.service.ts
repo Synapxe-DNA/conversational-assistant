@@ -15,7 +15,6 @@ export class ProfileService implements OnInit {
   ) {
     this.dbService.getAll<Profile>("profiles").subscribe((v) => {
       this.$profiles.next(v)
-      console.log(v)
     })
   }
 

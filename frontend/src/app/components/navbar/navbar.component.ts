@@ -34,7 +34,6 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     this.profileService.getProfiles().subscribe((v) => {
       this.profiles = v
-      console.log(this.profiles)
       this.cdr.markForCheck()
     })
   }
