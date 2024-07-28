@@ -54,22 +54,49 @@
     <div class="chat-container">
         <h1>Chat with AI</h1>
         <div id="result"></div>
+        <div>
+            <input type="text" id="message" placeholder="Type your message here">
+            <input type="file" id="fileInput" accept=".wav" required>
+        </div>
+        <button onclick="sendText()">Send Message</button>
+        <button onclick="sendVoice()">Send audio</button>
+        <button onclick="setProfile()">Set Profile</button>
 
-        <input type="text" id="message" placeholder="Type your message here">
-        <button onclick="sendMessage()">Send Message</button>
+    </div>
+    <div>
+
     </div>
 
     <script>
-        async function sendMessage() {
+        async function setProfile() {
             var msg = document.getElementById("message").value;
-            var response = await fetch('http://0.0.0.0:8000/chat/chat', {
+            var response = await fetch('http://0.0.0.0:8000/profile/set', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                        type: "Myself",
+                        age: 30,
+                        gender: "Male",
+                        existing_conditions: null,
+                        name: "Bob",
+                    })
+            })
+            var text = await response.text();
+            document.getElementById("result").innerHTML += text + "<br>";
+
+        }
+
+        async function sendText() {
+            var msg = document.getElementById("message").value;
+            var response = await fetch('http://0.0.0.0:8000/textchat/message', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                         message: msg,
-                        profile: null,
                  })
             });
 
@@ -86,6 +113,30 @@
                 }
                 return reader.read().then(processResult);
             });
+
+        }
+        async function sendVoice() {
+            var fileInput = document.getElementById("fileInput");
+
+            if (!fileInput.files.length) {
+                alert("Please select a file before uploading.");
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const formData = new FormData();
+
+            // Append the file to the FormData object
+
+            formData.append('voice', file);
+
+            var response = await fetch('http://0.0.0.0:8000/voicechat/message', {
+                method: 'POST',
+                body: formData
+            });
+
+            var text = await response.text();
+            document.getElementById("result").innerHTML += text + "<br>";
 
         }
     </script>

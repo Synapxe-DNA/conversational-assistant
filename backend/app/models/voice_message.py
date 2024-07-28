@@ -1,9 +1,9 @@
-from typing import Optional
+from dataclasses import dataclass
 
-from models.profile import Profile
+from fastapi import UploadFile
 from pydantic import BaseModel
 
 
+@dataclass
 class VoiceMessage(BaseModel):
-    message: bytearray
-    profile: Optional[Profile]
+    message: UploadFile

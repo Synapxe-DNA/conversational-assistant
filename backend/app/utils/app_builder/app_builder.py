@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.chatRouter import chatRouter
+from routes.profileRouter import profileRouter
 from routes.voiceRouter import voiceRouter
 
 
@@ -29,5 +30,6 @@ class AppBuilder:
         # Register routers here
         app.include_router(chatRouter)
         app.include_router(voiceRouter)
+        app.include_router(profileRouter)
 
         return app

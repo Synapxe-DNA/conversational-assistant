@@ -11,5 +11,8 @@ backend-start:
 backend-run:
 	@docker-compose -f ./backend/docker-compose.yml up
 
+backend-build:
+	@docker-compose -f ./backend/docker-compose.yml build
+
 backend-stop:
 	@docker-compose -f ./backend/docker-compose.yml down
