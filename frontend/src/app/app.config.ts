@@ -10,7 +10,7 @@ import { BrowserModule } from "@angular/platform-browser"
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
 import { NgxIndexedDBModule } from "ngx-indexed-db"
 import { NgxIndexedDbConfig } from "./configs/ngx-indexed-db/ngx-indexed-db.config"
-import {LucideAngularModule, MessageSquare, Mic, User, UserRoundPlus} from "lucide-angular";
+import {LucideAngularModule, MessageSquare, Mic, Settings, User, UserRoundPlus} from "lucide-angular";
 import {ToastModule} from "primeng/toast";
 
 export const appConfig: ApplicationConfig = {
@@ -26,6 +26,7 @@ export const appConfig: ApplicationConfig = {
         Mic,
         MessageSquare,
         User,
+        Settings
       })
     ),
     importProvidersFrom(ToastModule),
