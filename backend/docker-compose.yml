@@ -1,5 +1,8 @@
+name: "converstional-assistant-backend"
+
 services:
   web:
+    container_name: "hh-bot"
     build: .
     ports:
       - "8000:8000"
