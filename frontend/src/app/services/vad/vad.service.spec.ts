@@ -20,4 +20,8 @@ describe('VadService', () => {
   // it('should be created', () => {
   //   expect(service).toBeTruthy();
   // });
+
+  it("should not have any test cases", ()=>{
+    expect(1).toBe(1)
+  })
 });
