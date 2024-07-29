@@ -47,7 +47,7 @@ export class WaveformComponent implements AfterViewInit {
     // One more bar is added so that the "highest" frequency bar is attainable with regular voice
     this.audioAnalyser = new AudioAnalyser(
       this.stream as MediaStream,
-      this.bars + 1,
+      this.bars + 1, 0.9
     )
   }
 
