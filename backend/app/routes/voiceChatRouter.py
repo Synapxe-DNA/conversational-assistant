@@ -8,7 +8,7 @@ from fastapi.responses import StreamingResponse
 Endpoint for voice chat
 """
 
-voiceRouter = APIRouter(prefix="/voicechat")
+voiceChatRouter = APIRouter(prefix="/voicechat")
 
 
 async def audio_chunk_generator(
@@ -33,6 +33,6 @@ async def audio_chunk_generator(
         raise
 
 
-@voiceRouter.post("/message")
+@voiceChatRouter.post("/message")
 async def chat(voice: UploadFile):
     return StreamingResponse(audio_chunk_generator(), media_type="audio/wav")

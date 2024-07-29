@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routes.chatRouter import chatRouter
 from routes.profileRouter import profileRouter
+from routes.textChatRouter import textChatRouter
 from routes.ttsRouter import ttsRouter
-from routes.voiceRouter import voiceRouter
+from routes.voiceChatRouter import voiceChatRouter
 
 
 class AppBuilder:
@@ -29,8 +29,8 @@ class AppBuilder:
         )
 
         # Register routers here
-        app.include_router(chatRouter)
-        app.include_router(voiceRouter)
+        app.include_router(textChatRouter)
+        app.include_router(voiceChatRouter)
         app.include_router(profileRouter)
         app.include_router(ttsRouter)
 

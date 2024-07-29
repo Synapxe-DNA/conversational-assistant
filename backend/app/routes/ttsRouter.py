@@ -1,9 +1,9 @@
 import time
 from typing import Generator
-from models.tts_message import TTSMessage
+
 from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
-
+from models.tts_message import TTSMessage
 
 """
 Endpoint for text to speech
@@ -11,7 +11,10 @@ Endpoint for text to speech
 
 ttsRouter = APIRouter(prefix="/tts")
 
-async def audio_chunk_generator(chunk_size: int = 1024, delay: float = 0.0001) -> Generator[bytes, None, None]:
+
+async def audio_chunk_generator(
+    chunk_size: int = 1024, delay: float = 0.0001
+) -> Generator[bytes, None, None]:
     """
     Generator that yields audio file chunks directly from the uploaded file.
     """
@@ -29,6 +32,7 @@ async def audio_chunk_generator(chunk_size: int = 1024, delay: float = 0.0001) -
     except Exception as e:
         print(f"Error reading file: {e}")
         raise
+
 
 @ttsRouter.post("/message")
 async def chat(message: TTSMessage):

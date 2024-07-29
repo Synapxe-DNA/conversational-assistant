@@ -5,5 +5,12 @@ from pydantic import BaseModel
 
 
 @dataclass
-class VoiceMessage(BaseModel):
+class VoiceMessageRequest(BaseModel):
     message: UploadFile
+
+
+class VoiceMessageResponse(BaseModel):
+    message: str
+    sources: str
+    status: str
+    audio: bytearray
