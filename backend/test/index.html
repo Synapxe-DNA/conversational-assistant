@@ -47,6 +47,7 @@
             color: white;
         }
     </style>
+    <link rel="shortcut icon" href="#">
 </head>
 
 <body>
@@ -61,6 +62,11 @@
         <button onclick="sendText()">Send Message</button>
         <button onclick="sendVoice()">Send audio</button>
         <button onclick="setProfile()">Set Profile</button>
+        <button onclick="sendTTS()">TTS</button>
+
+        <audio controls id="audioPlayer">
+            Your browser does not support the audio element.
+        </audio>
 
     </div>
     <div>
@@ -130,15 +136,39 @@
 
             formData.append('voice', file);
 
-            var response = await fetch('http://0.0.0.0:8000/voicechat/message', {
+            const response = await fetch('http://0.0.0.0:8000/voicechat/message', {
                 method: 'POST',
                 body: formData
             });
-
-            var text = await response.text();
-            document.getElementById("result").innerHTML += text + "<br>";
+            const audioBlob = await response.blob();
+            const audioUrl = URL.createObjectURL(audioBlob);
+            const audioPlayer = document.getElementById("audioPlayer");
+            audioPlayer.src = audioUrl;
+            audioPlayer.play();
 
         }
+
+        async function sendTTS() {
+            var msg = document.getElementById("message").value;
+            var response = await fetch('http://0.0.0.0:8000/tts/message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                        message: msg,
+                 })
+            });
+
+            const audioBlob = await response.blob();
+            const audioUrl = URL.createObjectURL(audioBlob);
+            const audioPlayer = document.getElementById("audioPlayer");
+            audioPlayer.src = audioUrl;
+            audioPlayer.play();
+
+        }
+
+
     </script>
 
 </body>

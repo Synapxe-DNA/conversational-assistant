@@ -5,6 +5,10 @@ from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
 from models.text_message import TextMessage
 
+"""
+Endpoint for text chat
+"""
+
 chatRouter = APIRouter(prefix="/textchat")
 
 
