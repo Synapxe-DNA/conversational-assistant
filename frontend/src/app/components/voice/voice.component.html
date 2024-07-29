@@ -9,7 +9,7 @@ tw-relative
   <app-waveform [bars]="8" />
   <div class="button-group">
     <app-secondary-button (click)="prefChatModeToText()" type="chat"></app-secondary-button>
-    <app-microphone-button [state]="micState"></app-microphone-button>
+    <app-microphone-button (click)="handleMicButtonClick()" [state]="micState"></app-microphone-button>
     <app-secondary-button type="profile"></app-secondary-button>
   </div>
 
