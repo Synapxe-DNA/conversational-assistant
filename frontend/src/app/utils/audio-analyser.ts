@@ -6,8 +6,9 @@ export class AudioAnalyser {
    * Constructs an instance of AudioAnalyser.
    * @param stream The media stream to analyse.
    * @param numBars The number of frequency bars to return.
+   * @param smoothing Smoothing Time Constant
    */
-  constructor(stream: MediaStream, numBars: number) {
+  constructor(stream: MediaStream, numBars: number=8, smoothing:number=0.75) {
     this.numBars = numBars
 
     // Initialize audio context and analyser
@@ -16,7 +17,7 @@ export class AudioAnalyser {
     this.analyser.fftSize = 64
     this.analyser.minDecibels = -110
     this.analyser.maxDecibels = -45
-    this.analyser.smoothingTimeConstant = 0.75
+    this.analyser.smoothingTimeConstant = smoothing
 
     // Connect the media stream source to the analyser
     const source = audioContext.createMediaStreamSource(stream)
@@ -47,5 +48,15 @@ export class AudioAnalyser {
     }
 
     return frequencyData
+  }
+
+  /**
+   * Retrieves the overall audio level as a single value between 0 and 1.
+   * @returns The average audio level.
+   */
+  getAudioLevel(): number {
+    const frequencyData = this.getFrequency();
+    const sum = frequencyData.reduce((acc, value) => acc + value, 0);
+    return sum / frequencyData.length;
   }
 }
