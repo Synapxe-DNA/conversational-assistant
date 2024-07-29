@@ -29,6 +29,7 @@ class TextToSpeech:
         )
 
     def getAuthToken(self):
+        print(self.region)
         return "aad#" + self.resourceId + "#" + self.aadToken.token
 
     def readText(self, text):
@@ -50,7 +51,10 @@ class TextToSpeech:
 
 
 # Get text from the console and synthesize to the default speaker.
-tts = TextToSpeech()
-print("Enter some text that you want to speak >")
-text = input()
-tts.readText(text)
+
+
+if __name__ == "__main__":
+    tts = TextToSpeech()
+    print("Enter some text that you want to speak >")
+    text = input()
+    tts.readText(text)
