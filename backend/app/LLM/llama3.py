@@ -27,7 +27,8 @@ class LLM:
                         <|start_header_id|>user<|end_header_id|>
                         {text}
                         <|eot_id|>
-                        <|start_header_id|>assistant<|end_header_id|>""",
+                        <|start_header_id|>assistant<|end_header_id|>
+                    """,
         )
 
     def ask(self, text: str):

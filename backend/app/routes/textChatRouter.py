@@ -19,11 +19,11 @@ def generator(iter: Iterator[str], delay: float = 0.01):
             response_data = TextMessageResponse(
                 message=text, status="pending", sources=[]
             )
-            yield response_data.model_dump_json() + "\n"
+            yield response_data.model_dump_json()
             time.sleep(delay)  # delay introduced as the response is too fast
 
     final_response = TextMessageResponse(message="", status="completed", sources=[])
-    yield final_response.model_dump_json() + "\n"
+    yield final_response.model_dump_json()
 
 
 @textChatRouter.post("/message")
