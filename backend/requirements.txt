@@ -1,3 +1,11 @@
 azure-cognitiveservices-speech==1.38.0
 azure-identity==1.17.1
+fastapi==0.111.1
+
+# For llama3, can remove once we use openai
+langchain-core==0.2.19
+langchain-huggingface==0.0.3
+pydantic==2.8.2
 python-dotenv==1.0.1
+python-dotenv==1.0.1
+uvicorn==0.30.3
