@@ -1,63 +1,35 @@
 .chat-container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  max-width: 100%;
-  margin: auto;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  overflow: hidden;
+  @apply tw-flex tw-flex-col tw-h-full tw-max-w-4xl tw-mx-auto tw-border tw-border-gray-300 tw-rounded-lg tw-overflow-hidden;
 }
 
 .chat-window {
-  flex: 1;
-  padding: 10px;
-  overflow-y: auto;
-  background-color: #f9f9f9;
+  @apply tw-flex-1 tw-p-2 tw-overflow-y-auto tw-bg-gray-100;
 }
 
 .chat-message {
-  margin-bottom: 10px;
-  padding: 10px;
-  border-radius: 5px;
-  max-width: 80%;
-  word-wrap: break-word;
+  @apply tw-mb-2 tw-p-2 tw-rounded tw-max-w-full tw-break-words;
 }
 
 .user-message {
-  background-color: #e1ffc7;
-  align-self: flex-end;
+  @apply tw-bg-green-100 tw-self-end;
 }
 
 .bot-message {
-  background-color: #fff;
-  align-self: flex-start;
+  @apply tw-bg-white tw-self-start tw-text-right;
 }
 
 .input-area {
-  display: flex;
-  padding: 10px;
-  border-top: 1px solid #ddd;
-  background-color: #fff;
+  @apply tw-flex tw-p-2 tw-border-t tw-border-gray-300 tw-bg-white;
 }
 
 input {
-  flex: 1;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  margin-right: 10px;
+  @apply tw-flex-1 tw-p-2 tw-border tw-border-gray-300 tw-rounded tw-mr-2;
 }
 
 button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  background-color: #007bff;
-  color: #fff;
-  cursor: pointer;
+  @apply tw-px-4 tw-py-2 tw-border-none tw-rounded tw-bg-blue-600 tw-text-white tw-cursor-pointer;
 }
 
 button:hover {
-  background-color: #0056b3;
+  @apply tw-bg-blue-800;
 }
