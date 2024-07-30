@@ -1,33 +1,48 @@
 import {Injectable} from '@angular/core';
-import {continuous, final, skipUntilSaid, SpeechRecognitionService} from "@ng-web-apis/speech";
-import {BehaviorSubject, Observable, repeat, retry} from "rxjs";
+import {BehaviorSubject, Observable, repeat, retry, Subject} from "rxjs";
 import {VoiceActivity} from "../../types/voice-activity.type";
 
 @Injectable({
   providedIn: 'root'
 })
 export class VadService {
-  private endTimeout: number = 0
+
+  private endTimeout:number = 0
+  private $speech:Subject<void> = new Subject<void>()
+  private recognition:SpeechRecognition
+
+
 
   constructor(
-    private recognition: SpeechRecognitionService
   ) {
 
+    if(Object.hasOwn(window, "SpeechRecognition")){
+      this.recognition = new SpeechRecognition()
+    } else if (Object.hasOwn(window, "webkitSpeechRecognition")){
+      this.recognition = new webkitSpeechRecognition()
+    } else {
+      // TODO fallback strategy for speech recognition
+      throw new Error("Fallback VAD not implemented!")
+    }
+
+    this.configSpeechRecognition()
+  }
+
+  private configSpeechRecognition(){
+    this.recognition.continuous = true
+    this.recognition.interimResults = true
+    this.recognition.onresult = () => {
+      this.$speech.next()
+    }
+    this.recognition.start()
   }
 
   start():Observable<VoiceActivity>{
 
     const vadState = new BehaviorSubject<VoiceActivity>(VoiceActivity.End)
 
-    const sub = this.recognition.pipe(
-      retry(),
-      repeat(),
-      continuous()
-    )
-    sub.subscribe({
+    this.$speech.subscribe({
       next: (res)=>{
-
-        console.log(res)
 
         if(vadState.value!==VoiceActivity.Start){
           // User has started talking
@@ -38,7 +53,7 @@ export class VadService {
         clearTimeout(this.endTimeout)
         this.endTimeout = setTimeout(() => {
           vadState.next(VoiceActivity.End)
-        }, 1500) // fire "end" after 1.5s of inactivity
+        }, 1000) // fire "end" after 1.0s of inactivity
       },
       error: (e:Error) => {console.error(e)},
       complete: ()=>{console.log("done")}
