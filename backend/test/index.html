@@ -121,6 +121,7 @@
                     return;
                 }
                 let token = decoder.decode(result.value);
+                console.log(token)
                 data = JSON.parse(token)
                 document.getElementById("result").innerHTML += data.message;
 

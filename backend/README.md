@@ -33,7 +33,15 @@
 
 <img src="images/resourceid.png" alt="drawing" width="200"/>
 
-### Getting Speech Region
+#### Getting Speech Region
 
 1. In the same resource management tab, click on 'Keys and Endpoint'
 2. Copy the 'Location/Region' into your `.env` file
+
+#### Getting HuggingFace API Key
+
+1. Create an account on HuggingFace
+2. Go to your profile -> Acess Tokens
+3. Click `Create new token`
+4. Click the `Write` option
+5. Copy the token and add it into your `.env` file
