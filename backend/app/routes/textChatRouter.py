@@ -13,7 +13,7 @@ Endpoint for text chat
 textChatRouter = APIRouter(prefix="/textchat")
 
 
-def generator(iter: Iterator[str], delay: float = 0.01):
+def generator(iter: Iterator[str], delay: float = 0.01) -> Iterator[str]:
     for text in iter:
         if text != "<|eot_id|>":
             response_data = TextMessageResponse(

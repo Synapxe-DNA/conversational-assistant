@@ -47,10 +47,17 @@ class TextToSpeech:
                         "Error details: {}".format(cancellation_details.error_details)
                     )
                     print("Did you set the speech resource key and region values?")
+    
+    def getAudio(self,text):
+        speech_synthesis_result = self.speech_synthesizer.speak_text_async(text).get()
+        stream = speechsdk.AudioDataStream(speech_synthesis_result)
+        print("running")
+        return stream.read_data()
 
 
-# Get text from the console and synthesize to the default speaker.
-tts = TextToSpeech()
-print("Enter some text that you want to speak >")
-text = input()
-tts.readText(text)
+
+# # Get text from the console and synthesize to the default speaker.
+# tts = TextToSpeech()
+# print("Enter some text that you want to speak >")
+# text = input()
+# tts.readText(text)
