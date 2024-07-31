@@ -17,6 +17,8 @@
       (keyup.enter)="sendMessage()"
       placeholder="Type a message..."
     />
-    <button (click)="sendMessage()">Send</button>
+    <button (click)="sendMessage()" aria-label="Send">
+      <lucide-icon name="send" size="20"></lucide-icon>
+    </button>
   </div>
 </div>

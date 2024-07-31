@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
+import { LucideAngularModule } from "lucide-angular";
 
 interface Message {
   text: string;
@@ -10,7 +11,7 @@ interface Message {
 @Component({
   selector: "app-text",
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, LucideAngularModule],
   templateUrl: "./text.component.html",
   styleUrls: ["./text.component.css"],
 })
