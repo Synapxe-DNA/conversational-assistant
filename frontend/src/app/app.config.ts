@@ -18,6 +18,7 @@ import {
   User,
   UserRoundPlus,
   Send,
+  StopCircle,
 } from "lucide-angular";
 import { ToastModule } from "primeng/toast";
 
@@ -36,6 +37,7 @@ export const appConfig: ApplicationConfig = {
         User,
         Settings,
         Send,
+        StopCircle,
       })
     ),
     importProvidersFrom(ToastModule),
