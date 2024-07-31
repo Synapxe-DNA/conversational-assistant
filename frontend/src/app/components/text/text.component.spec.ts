@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing"
 
 import { TextComponent } from "./text.component"
+import {icons, LucideAngularModule} from "lucide-angular";
 
 describe("TextComponent", () => {
   let component: TextComponent
@@ -8,7 +9,7 @@ describe("TextComponent", () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TextComponent],
+      imports: [TextComponent, LucideAngularModule.pick(icons)],
     }).compileComponents()
 
     fixture = TestBed.createComponent(TextComponent)
