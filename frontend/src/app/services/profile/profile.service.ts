@@ -3,6 +3,7 @@ import { NgxIndexedDBService } from "ngx-indexed-db"
 import { Profile } from "../../types/profile.type"
 import { BehaviorSubject } from "rxjs"
 import {MessageService} from "primeng/api";
+import {ActivatedRoute} from "@angular/router";
 
 @Injectable({
   providedIn: "root",
@@ -12,6 +13,7 @@ export class ProfileService implements OnInit {
 
   constructor(
     private dbService: NgxIndexedDBService,
+    private route: ActivatedRoute
   ) {
     this.dbService.getAll<Profile>("profiles").subscribe((v) => {
       this.$profiles.next(v)
@@ -28,6 +30,23 @@ export class ProfileService implements OnInit {
 
   getProfiles(): BehaviorSubject<Profile[]> {
     return this.$profiles
+  }
+
+  getProfile(profileId:string):BehaviorSubject<Profile|undefined> {
+
+    const returnProfile = new BehaviorSubject<Profile|undefined>(undefined)
+
+    this.$profiles.subscribe(profiles => {
+      const filtered = profiles.filter(p => p.id === profileId)
+
+      if(filtered.length){
+        returnProfile.next(filtered[0])
+      }
+    })
+
+
+    return returnProfile
+
   }
 
   deleteProfile(id: string) {
