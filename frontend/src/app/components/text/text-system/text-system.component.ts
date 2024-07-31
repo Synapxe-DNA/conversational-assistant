@@ -12,5 +12,7 @@ import { TextSourceComponent } from '../text-source/text-source.component';
 
 export class TextSystemComponent {
   @Input() message!: Message
+
+  
   
 }
