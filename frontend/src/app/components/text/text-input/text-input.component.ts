@@ -55,7 +55,11 @@ export class TextInputComponent implements OnInit{
       role: MessageRole.User,
       timestamp: new Date().getTime(),
       message: this.questionForm.value.question || ""
-    }).catch(console.error)
+    })
+      .then(()=>{
+        this.questionForm.reset()
+      })
+      .catch(console.error)
   }
 
 }
