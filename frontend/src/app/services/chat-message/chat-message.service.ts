@@ -28,7 +28,7 @@ export class ChatMessageService {
 
     this.$currentProfileId.next(profileId)
 
-    const messages = await firstValueFrom<Message[] | undefined>(this.indexedStore.getByIndex('messages', 'profile_id', profileId))
+    const messages = await firstValueFrom<Message[] | undefined>(this.indexedStore.getAllByIndex('messages', 'profile_id', IDBKeyRange.only(profileId)))
     this.$messages = new BehaviorSubject<Message[]>(messages || [])
 
     return this.$messages
