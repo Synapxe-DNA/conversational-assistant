@@ -1,38 +1,17 @@
 <div class="chat-container">
   <div class="chat-window" #chatWindow>
-    <div
-      *ngFor="let message of messages"
-      class="chat-message"
-      [ngClass]="{
-        'user-message': message.type === 'user',
-        'bot-message': message.type === 'bot'
-      }"
-    >
-      {{ message.text }}
-      <app-source-tile *ngIf=" message.type === 'bot' "></app-source-tile>
+    @for (message of messages; track message.id) {
+    <div>
+      @switch (message.role) {
+      @case (user) {
+      <app-text-user [message]="message"></app-text-user>
+      }
+      @case (system) {
+      <app-text-system [message]="message"></app-text-system>
+      }
+      }
     </div>
+    }
   </div>
-  <div class="input-area">
-    <input
-      [(ngModel)]="newMessage"
-      (keyup.enter)="sendMessage()"
-      placeholder="Type a message..."
-    />
-    <button
-      (click)="sendMessage()"
-      aria-label="Send"
-      [disabled]="waitingForBotResponse"
-    >
-      <lucide-icon
-        *ngIf="!waitingForBotResponse"
-        name="send"
-        size="20"
-      ></lucide-icon>
-      <lucide-icon
-        *ngIf="waitingForBotResponse"
-        name="stop-circle"
-        size="20"
-      ></lucide-icon>
-    </button>
-  </div>
+  <app-text-input></app-text-input>
 </div>

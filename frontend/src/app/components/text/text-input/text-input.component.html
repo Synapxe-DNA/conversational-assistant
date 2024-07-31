@@ -1,0 +1,23 @@
+<div class="input-area">
+    <input
+      [(ngModel)]="newMessage"
+      (keyup.enter)="sendMessage()"
+      placeholder="Type a message..."
+    />
+    <button
+      (click)="sendMessage()"
+      aria-label="Send"
+      [disabled]="waitingForBotResponse"
+    >
+      <lucide-icon
+        *ngIf="!waitingForBotResponse"
+        name="send"
+        size="20"
+      ></lucide-icon>
+      <lucide-icon
+        *ngIf="waitingForBotResponse"
+        name="stop-circle"
+        size="20"
+      ></lucide-icon>
+    </button>
+  </div>
