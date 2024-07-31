@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { LucideAngularModule } from "lucide-angular";
@@ -6,6 +6,11 @@ import { Message, MessageRole, MessageSource } from "../../types/message.type";
 import { TextInputComponent } from "../text/text-input/text-input.component";
 import { TextSystemComponent } from "../text/text-system/text-system.component";
 import { TextUserComponent } from "./text-user/text-user.component";
+import { ChatMessageService } from "../../services/chat-message/chat-message.service";
+import { BehaviorSubject } from "rxjs";
+import { Profile } from "../../types/profile.type";
+import { ProfileService } from "../../services/profile/profile.service";
+import { ActivatedRoute } from "@angular/router";
 
 const sources: MessageSource[] = [
   {
@@ -22,8 +27,6 @@ const sources: MessageSource[] = [
   }
 ];
 
-const messages: Message[] = [
-];
 
 @Component({
   selector: "app-text",
@@ -33,8 +36,26 @@ const messages: Message[] = [
   styleUrls: ["./text.component.css"],
 })
 
-export class TextComponent {
-  messages: Message[] = messages;
+export class TextComponent implements OnInit{
   user: string = MessageRole.User
   system: string = MessageRole.System
+  profile:BehaviorSubject<Profile|undefined> = new BehaviorSubject<Profile|undefined>(undefined)
+  messages: Message[] = []
+
+  constructor(
+    private chatMessageService: ChatMessageService,
+    private profileService: ProfileService,
+    private route: ActivatedRoute
+  ) {
+  }
+
+  ngOnInit(): void {
+    this.profile = this.profileService.getProfile(this.route.snapshot.paramMap.get('profileId') as string)
+
+    this.chatMessageService.load(this.profile?.value?.id || 'general').then(messages => {
+      messages.subscribe((messages) => {
+        this.messages = messages
+      })
+    })
+  }
 }
