@@ -1,14 +1,13 @@
 <div class="chat-container">
   <div class="chat-window" #chatWindow>
-    <div
-      *ngFor="let message of messages"
-      class="chat-message"
-      [ngClass]="{
-        'user-message': message.type === 'user',
-        'bot-message': message.type === 'bot'
-      }"
-    >
-      {{ message.text }}
+    <div *ngFor="let message of messages">
+      <app-text-user
+        *ngIf="message.type === 'user'"
+        [message]="message.text"
+      ></app-text-user>
+      <div *ngIf="message.type === 'bot'" class="chat-message bot-message">
+        {{ message.text }}
+      </div>
     </div>
   </div>
   <div class="input-area">
