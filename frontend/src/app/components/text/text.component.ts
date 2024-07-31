@@ -4,6 +4,7 @@ import { FormsModule } from "@angular/forms";
 import { LucideAngularModule } from "lucide-angular";
 import { TextUserComponent } from "./text-user/text-user.component";
 import { Message, MessageRole } from "../../types/message.type";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-text",
@@ -17,6 +18,13 @@ export class TextComponent {
   newMessage: string = "";
   @ViewChild("chatWindow") chatWindow!: ElementRef;
   waitingForBotResponse: boolean = false;
+  private router: Router = new Router();
+  profile_id: string = "";
+
+  ngOnInit() {
+    const currentPath = this.router.url.split("/");
+    this.profile_id = currentPath[2];
+  }
 
   getNextMessageId(): string {
     return this.messages.length == 0
@@ -28,12 +36,11 @@ export class TextComponent {
     if (this.newMessage.trim() && !this.waitingForBotResponse) {
       const userMessage: Message = {
         id: this.getNextMessageId(),
-        profile_id: "user",
+        profile_id: this.profile_id,
         role: MessageRole.User,
         message: this.newMessage,
         timestamp: new Date().toISOString(),
       };
-      console.log(userMessage);
       this.messages.push(userMessage);
       this.newMessage = "";
       this.scrollToBottom();
@@ -42,7 +49,7 @@ export class TextComponent {
       setTimeout(() => {
         const botMessage: Message = {
           id: Date.now().toString(),
-          profile_id: "bot",
+          profile_id: this.profile_id,
           role: MessageRole.System,
           message: "This is a bot response.",
           timestamp: new Date().toISOString(),
