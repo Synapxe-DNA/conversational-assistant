@@ -9,6 +9,7 @@
       }"
     >
       {{ message.text }}
+      <app-source-tile *ngIf=" message.type === 'bot' "></app-source-tile>
     </div>
   </div>
   <div class="input-area">

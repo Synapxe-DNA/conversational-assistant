@@ -2,19 +2,20 @@ import { Component, ElementRef, ViewChild } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { LucideAngularModule } from "lucide-angular";
+import { SourceTileComponent } from "../source-tile/source-tile.component";
 
 interface Message {
   text: string;
   type: "user" | "bot";
 }
-
 @Component({
   selector: "app-text",
   standalone: true,
-  imports: [CommonModule, FormsModule, LucideAngularModule],
+  imports: [CommonModule, FormsModule, LucideAngularModule, SourceTileComponent],
   templateUrl: "./text.component.html",
   styleUrls: ["./text.component.css"],
 })
+
 export class TextComponent {
   messages: Message[] = [];
   newMessage: string = "";
