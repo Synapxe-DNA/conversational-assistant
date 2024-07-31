@@ -14,6 +14,7 @@ import {
   LucideAngularModule,
   MessageSquare,
   Mic,
+  MicOff,
   Settings,
   User,
   UserRoundPlus,
@@ -32,7 +33,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(
       LucideAngularModule.pick({
         UserRoundPlus,
-        Mic,
+        Mic, MicOff,
         MessageSquare,
         User,
         Settings,
