@@ -23,38 +23,6 @@ const sources: MessageSource[] = [
 ];
 
 const messages: Message[] = [
-  {
-    id: "1",
-    profile_id: "1",
-    role: MessageRole.User,
-    message: "This is a user message.",
-    timestamp: "2023-08-01T12:00:00Z",
-    sources: []
-  },
-  {
-    id: "2",
-    profile_id: "1",
-    role: MessageRole.System,
-    message: "This is a system message.",
-    timestamp: "2023-08-01T12:00:00Z",
-    sources: sources,
-  },
-  {
-    id: "3",
-    profile_id: "1",
-    role: MessageRole.User,
-    message: "This is another user message.",
-    timestamp: "2023-08-02T14:30:00Z",
-    sources: []
-  },
-  {
-    id: "4",
-    profile_id: "1",
-    role: MessageRole.System,
-    message: "This is another system message.",
-    timestamp: "2023-08-02T14:30:00Z",
-    sources: sources,
-  },
 ];
 
 @Component({
