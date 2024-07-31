@@ -39,7 +39,6 @@ export class TextInputComponent implements OnInit{
 
   ngOnInit() {
     this.profile = this.profileService.getProfile(this.route.snapshot.paramMap.get('profileId') as string)
-    this.chatMessageService.load("general").then(console.log)
   }
 
   setVoiceMode(){
@@ -54,7 +53,7 @@ export class TextInputComponent implements OnInit{
       id: createId(),
       profile_id: this.profile?.value?.id || "general",
       role: MessageRole.User,
-      timestamp: `${Date.now()}`,
+      timestamp: new Date().getTime(),
       message: this.questionForm.value.question || ""
     }).catch(console.error)
   }

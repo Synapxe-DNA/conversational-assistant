@@ -15,6 +15,6 @@ export interface Message {
   profile_id: string
   role: MessageRole
   message: string
-  timestamp: string
+  timestamp: number
   sources?: MessageSource[]
 }
