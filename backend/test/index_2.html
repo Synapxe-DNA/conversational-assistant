@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WAV File Playback Test</title>
+    <style>
+        #response, #chunkIndex {
+            width: 100%;
+            height: 200px;
+            overflow: auto;
+            white-space: pre-wrap;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>WAV File Playback Test</h1>
+    <button id="startProcessingButton">Start Processing</button>
+    <h2>Response:</h2>
+    <textarea id="response" readonly></textarea>
+    <h2>Chunk Index:</h2>
+    <textarea id="chunkIndex" readonly></textarea>
+    <h2>Audio Playback:</h2>
+    <audio id="audioPlayback" controls></audio>
+    <br>
+    <a id="downloadLink" href="#" download="output.wav" style="display: none;">Download Concatenated Audio</a>
+
+    <script>
+        document.getElementById('startProcessingButton').addEventListener('click', async function() {
+            const responseElement = document.getElementById('response');
+            const chunkIndexElement = document.getElementById('chunkIndex');
+            responseElement.value = 'Fetching and processing mock data...';
+            chunkIndexElement.value = ''; // Reset the chunk index display
+
+            const audioChunks = [];
+            let sampleRate = 44100; // Default sample rate
+            let numChannels = 1; // Default to mono audio
+            let bitsPerSample = 16; // Default to 16-bit samples
+
+            const audioPlayback = document.getElementById('audioPlayback');
+            audioPlayback.src = ''; // Reset the audio source
+
+            try {
+                const response = await fetch('http://127.0.0.1:8000/voicechat/message', {
+                    method: 'POST'
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+
+                const reader = response.body.getReader();
+                let decoder = new TextDecoder('utf-8');
+                let result = '';
+                let firstChunk = true;
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    result += decoder.decode(value, { stream: true });
+
+                    try {
+                        // Parse JSON response fragment
+                        if (result.endsWith(']}')) {
+                            // Complete JSON response received
+                            const jsonResponse = JSON.parse(result);
+                            sampleRate = jsonResponse.sample_rate;
+                            numChannels = jsonResponse.num_channels;
+                            bitsPerSample = jsonResponse.bits_per_sample;
+
+                            jsonResponse.voice.forEach(([index, chunkBase64]) => {
+                                try {
+                                    const chunkBytes = Uint8Array.from(atob(chunkBase64), c => c.charCodeAt(0));
+                                    audioChunks.push(chunkBytes);
+                                    console.log(chunkBytes)
+                                    console.log("--------------------")
+                                    // Update chunk index display
+                                    chunkIndexElement.value += `Chunk ${index} received\n`;
+                                } catch (e) {
+                                    console.error(`Error processing chunk ${index}:`, e);
+                                }
+                            });
+
+                            // Update the response element with formatted JSON
+                            responseElement.value = JSON.stringify(jsonResponse, null, 2);
+
+                            // Concatenate all chunks into a single Uint8Array
+                            const totalLength = audioChunks.reduce((acc, chunk) => acc + chunk.length, 0);
+                            const audioData = new Uint8Array(totalLength);
+                            let offset = 0;
+                            for (let chunk of audioChunks) {
+                                audioData.set(chunk, offset);
+                                offset += chunk.length;
+                            }
+
+                            // Create a WAV file header and append the audio data
+                            const wavHeader = createWavHeader(totalLength, sampleRate, numChannels, bitsPerSample);
+                            const wavFile = new Uint8Array(wavHeader.length + audioData.length);
+                            wavFile.set(wavHeader, 0);
+                            wavFile.set(audioData, wavHeader.length);
+
+                            // Create a Blob from the concatenated Uint8Array
+                            const audioBuffer = new Blob([wavFile], { type: 'audio/wav' });
+                            const audioUrl = URL.createObjectURL(audioBuffer);
+                            audioPlayback.src = audioUrl;
+                            audioPlayback.load(); // Reload the audio element
+
+                            // Create a download link for the Blob
+                            const downloadLink = document.getElementById('downloadLink');
+                            downloadLink.href = audioUrl;
+                            downloadLink.style.display = 'block'; // Show the download link
+
+                            // Clear result buffer after processing
+                            result = '';
+                        }
+                    } catch (e) {
+                        console.error('Error processing JSON fragment:', e);
+                        responseElement.value = `Error: ${e.message}`;
+                    }
+                }
+
+            } catch (error) {
+                responseElement.value = `Error: ${error.message}`;
+            }
+        });
+
+        function createWavHeader(dataLength, sampleRate, numChannels, bitsPerSample) {
+            const buffer = new ArrayBuffer(44);
+            const view = new DataView(buffer);
+
+            // "RIFF" chunk descriptor
+            writeString(view, 0, 'RIFF');
+            view.setUint32(4, 36 + dataLength, true);
+            writeString(view, 8, 'WAVE');
+
+            // "fmt " sub-chunk
+            writeString(view, 12, 'fmt ');
+            view.setUint32(16, 16, true); // Sub-chunk size
+            view.setUint16(20, 1, true); // Audio format (1 = PCM)
+            view.setUint16(22, numChannels, true);
+            view.setUint32(24, sampleRate, true);
+            view.setUint32(28, sampleRate * numChannels * bitsPerSample / 8, true); // Byte rate
+            view.setUint16(32, numChannels * bitsPerSample / 8, true); // Block align
+            view.setUint16(34, bitsPerSample, true);
+
+            // "data" sub-chunk
+            writeString(view, 36, 'data');
+            view.setUint32(40, dataLength, true);
+
+            return new Uint8Array(buffer);
+        }
+
+        function writeString(view, offset, string) {
+            for (let i = 0; i < string.length; i++) {
+                view.setUint8(offset + i, string.charCodeAt(i));
+            }
+        }
+    </script>
+</body>
+</html>

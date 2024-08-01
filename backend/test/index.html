@@ -80,7 +80,7 @@
     <script>
         async function setProfile() {
             var msg = document.getElementById("message").value;
-            var response = await fetch('http://0.0.0.0:8000/profile/set', {
+            var response = await fetch('http://localhost:8000/profile/set', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -144,7 +144,7 @@
 
             formData.append('voice', file);
 
-            const response = await fetch('http://0.0.0.0:8000/voicechat/message', {
+            const response = await fetch('http://localhost:8000/voicechat/message', {
                 method: 'POST',
                 body: formData
             });
@@ -158,7 +158,7 @@
 
         async function sendTTS() {
             var msg = document.getElementById("message").value;
-            var response = await fetch('http://0.0.0.0:8000/tts/message', {
+            var response = await fetch('http://localhost:8000/tts/message', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
