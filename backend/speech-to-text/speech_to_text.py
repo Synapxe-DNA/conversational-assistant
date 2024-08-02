@@ -1,3 +1,4 @@
+import io
 import os
 import threading
 
@@ -9,42 +10,42 @@ load_dotenv("./.env")
 
 
 class SpeechRecognition:
-    def __init__(self, filename):
-        self.filename = filename
-        self.speech_recognizer, self.all_results, self.recognition_done = (
-            self.setup_speech_recognizer()
-        )
+    def __init__(self):
 
-    @staticmethod
-    def get_speech_config():
-        resourceId = os.getenv("SPEECH_RESOURCE_ID")
-        region = os.getenv("SPEECH_REGION")
+        """
+        # Azure Config 
+        # self.resource_id = current_app.config.get(CONFIG_SPEECH_SERVICE_ID)
+        # self.region = current_app.config[CONFIG_SPEECH_SERVICE_LOCATION]
+        # self.speech_token = speech_token
+        # self.auth_token = self.getAuthToken()
+        """
 
-        if not resourceId or not region:
-            raise ValueError(
-                "Azure resource ID or region is not set in environment variables."
-            )
-
+        ###    
+        self.resource_id = os.getenv("SPEECH_RESOURCE_ID")
+        self.region = os.getenv("SPEECH_REGION")
         azure_credential = AzureCliCredential()
         aadToken = azure_credential.get_token(
             "https://cognitiveservices.azure.com/.default"
         )
+        self.auth_token = "aad#" + self.resource_id + "#" + aadToken.token
+        ####
 
-        authorizationToken = "aad#" + resourceId + "#" + aadToken.token
-        speech_config = speechsdk.SpeechConfig(
-            auth_token=authorizationToken, region=region
+        self.speech_config = speechsdk.SpeechConfig(
+            auth_token=self.auth_token, region=self.region
         )
-
-        return speech_config
+        self.audio_blob = None
+        self.recognition_done = threading.Event()
 
     def setup_speech_recognizer(self):
-        speech_config = self.get_speech_config()
+        speech_config = self.speech_config
         speech_config.set_property(
             property_id=speechsdk.PropertyId.SpeechServiceConnection_LanguageIdMode,
             value="Continuous",
         )
 
-        audio_config = speechsdk.audio.AudioConfig(filename=self.filename)
+        audio_stream = speechsdk.audio.PushAudioInputStream()
+        # audio_format = speechsdk.audio.AudioStreamFormat(samples_per_second=16000, bits_per_sample=16, channels=1)
+        audio_config = speechsdk.audio.AudioConfig(stream=audio_stream)
 
         auto_detect_source_language_config = (
             speechsdk.languageconfig.AutoDetectSourceLanguageConfig(
@@ -58,16 +59,29 @@ class SpeechRecognition:
         )
 
         all_results = {"text": [], "language": []}
-        recognition_done = threading.Event()
 
         speech_recognizer.recognized.connect(self.handle_final_result(all_results))
         speech_recognizer.session_started.connect(
             lambda evt: print("SESSION STARTED: {}".format(evt))
         )
-        speech_recognizer.session_stopped.connect(lambda evt: recognition_done.set())
-        speech_recognizer.canceled.connect(lambda evt: recognition_done.set())
+        speech_recognizer.session_stopped.connect(
+            lambda evt: self.recognition_done.set()
+        )
+        speech_recognizer.canceled.connect(lambda evt: self.recognition_done.set())
 
-        return speech_recognizer, all_results, recognition_done
+        self.push_audio(audio_stream)
+
+        return speech_recognizer, all_results
+
+    def push_audio(self, audio_stream):
+        with io.BytesIO(self.audio_blob) as audio_file:
+            chunk_size = 1024
+            while True:
+                chunk = audio_file.read(chunk_size)
+                if not chunk:
+                    break
+                audio_stream.write(chunk)
+            audio_stream.close()
 
     @staticmethod
     def handle_final_result(all_results):
@@ -87,15 +101,10 @@ class SpeechRecognition:
 
         return inner
 
-    def run(self):
+    def transcribe(self, audio_blob):
+        self.audio_blob = audio_blob
+        self.speech_recognizer, all_results = self.setup_speech_recognizer()
         self.speech_recognizer.start_continuous_recognition()
         self.recognition_done.wait()
         self.speech_recognizer.stop_continuous_recognition()
-        return self.all_results
-
-
-if __name__ == "__main__":
-    filename = "./speech-to-text/samples/sg_lhl_10s_chinese.wav"
-    speech_recognition = SpeechRecognition(filename)
-    results = speech_recognition.run()
-    print(results)
+        return all_results
