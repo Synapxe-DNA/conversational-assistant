@@ -1,5 +1,6 @@
-import threading
 import os
+import threading
+
 import azure.cognitiveservices.speech as speechsdk
 from azure.identity import AzureCliCredential
 from dotenv import load_dotenv
@@ -10,7 +11,9 @@ load_dotenv("./.env")
 class SpeechRecognition:
     def __init__(self, filename):
         self.filename = filename
-        self.speech_recognizer, self.all_results, self.recognition_done = self.setup_speech_recognizer()
+        self.speech_recognizer, self.all_results, self.recognition_done = (
+            self.setup_speech_recognizer()
+        )
 
     @staticmethod
     def get_speech_config():
@@ -18,13 +21,19 @@ class SpeechRecognition:
         region = os.getenv("SPEECH_REGION")
 
         if not resourceId or not region:
-            raise ValueError("Azure resource ID or region is not set in environment variables.")
+            raise ValueError(
+                "Azure resource ID or region is not set in environment variables."
+            )
 
         azure_credential = AzureCliCredential()
-        aadToken = azure_credential.get_token("https://cognitiveservices.azure.com/.default")
+        aadToken = azure_credential.get_token(
+            "https://cognitiveservices.azure.com/.default"
+        )
 
         authorizationToken = "aad#" + resourceId + "#" + aadToken.token
-        speech_config = speechsdk.SpeechConfig(auth_token=authorizationToken, region=region)
+        speech_config = speechsdk.SpeechConfig(
+            auth_token=authorizationToken, region=region
+        )
 
         return speech_config
 
@@ -52,7 +61,9 @@ class SpeechRecognition:
         recognition_done = threading.Event()
 
         speech_recognizer.recognized.connect(self.handle_final_result(all_results))
-        speech_recognizer.session_started.connect(lambda evt: print("SESSION STARTED: {}".format(evt)))
+        speech_recognizer.session_started.connect(
+            lambda evt: print("SESSION STARTED: {}".format(evt))
+        )
         speech_recognizer.session_stopped.connect(lambda evt: recognition_done.set())
         speech_recognizer.canceled.connect(lambda evt: recognition_done.set())
 
@@ -68,12 +79,17 @@ class SpeechRecognition:
                 all_results["text"].append(evt.result.text)
                 all_results["language"].append(detected_language)
             elif evt.result.reason == speechsdk.ResultReason.NoMatch:
-                print("No speech could be recognized: {}".format(evt.result.no_match_details))
+                print(
+                    "No speech could be recognized: {}".format(
+                        evt.result.no_match_details
+                    )
+                )
+
         return inner
 
     def run(self):
         self.speech_recognizer.start_continuous_recognition()
-        self.recognition_done.wait()  
+        self.recognition_done.wait()
         self.speech_recognizer.stop_continuous_recognition()
         return self.all_results
 
