@@ -11,16 +11,15 @@ load_dotenv("./.env")
 
 class SpeechRecognition:
     def __init__(self):
-
         """
-        # Azure Config 
+        # Azure Config
         # self.resource_id = current_app.config.get(CONFIG_SPEECH_SERVICE_ID)
         # self.region = current_app.config[CONFIG_SPEECH_SERVICE_LOCATION]
         # self.speech_token = speech_token
         # self.auth_token = self.getAuthToken()
         """
 
-        ###    
+        ###
         self.resource_id = os.getenv("SPEECH_RESOURCE_ID")
         self.region = os.getenv("SPEECH_REGION")
         azure_credential = AzureCliCredential()
